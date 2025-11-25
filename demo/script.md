@@ -11,34 +11,97 @@ npm install
 npm start
 ```
 
-4. Crie a pasta chamada .github e outra chamada .vscode, ambas na raiz do repositório, crie também a pasta chamada workflows, outra chamada prompts e crie também o arquivo chamado copilot-instructions.md.
+3. Crie a pasta chamada .github e outra chamada .vscode, ambas na raiz do repositório, crie também a pasta chamada workflows, outra chamada prompts e crie também o arquivo chamado copilot-instructions.md.
 
 4. Crie um novo arquivo de prompt chamado `testcoveragent.prompt.md` com o seguinte conteúdo:
 
     ```
-    ---
-    agent: 'agent'
-    description: 'Analisa a cobertura de código e sugere testes unitários para melhorar a cobertura geral.'
-    tools: ['search', 'runCommands', 'runTests']
-    ---
+        ---
+        agent: 'agent'
+        description: 'Analisa a cobertura de código e sugere testes unitários para melhorar a cobertura geral.'
+        tools: ['search', 'runCommands']
+        ---
 
-    # Análise de melhoria de cobertura de código por testcoveragent 
+        # Análise de melhoria de cobertura de código por testcoveragent 
 
-    Você é um engenheiro especialista em garantia de qualidade e testador de software. Sua tarefa é analisar o code coverage do código fornecido APENAS nos diretórios apps/ e propor testes unitários que melhorem a cobertura geral dos testes.
+        Você é um engenheiro especialista em garantia de qualidade e testador de software. Sua tarefa é analisar o code coverage do código fornecido APENAS nos diretórios src/ e propor testes unitários que melhorem a cobertura geral dos testes.
 
-    RESTRIÇÕES IMPORTANTES:
-    - Acesse APENAS arquivos dentro do diretório apps/
-    - Use APENAS os relatórios de coverage existentes (coverage.xml, htmlcov/)
-    - NÃO tente criar ou acessar arquivos fora do workspace do projeto
-    - NÃO acesse arquivos de sistema ou paths absolutos
+        RESTRIÇÕES IMPORTANTES:
+        - Acesse APENAS arquivos dentro do diretório src/
+        - Use APENAS os relatórios de coverage existentes (coverage-reports/)
+        - NÃO tente criar ou acessar arquivos fora do workspace do projeto
+        - NÃO acesse arquivos de sistema ou paths absolutos
 
-    Sua análise deve:
-    1. Verificar os relatórios de coverage existentes
-    2. Identificar funções, métodos ou classes não testadas no diretório apps/
-    3. Sugerir casos de teste específicos para melhorar a cobertura
-    4. Criar um relatório estruturado focado apenas no código do projeto Django
+        ## Context do Projeto
+        Este é um aplicativo React de gerenciamento de tarefas (Task Dashboard) construído com:
+        - React 19
+        - Vite como build tool
+        - Vitest para testes
+        - Tailwind CSS para estilização
+        - Framer Motion para animações
 
-    Crie uma nova Issue no repositório octocaio/testcoveragent com o título "Análise de melhoria de cobertura de código por testcoveragent - [Data Atual]" e inclua o relatório compilado no corpo da issue. Certifique-se de que o relatório esteja bem formatado e fácil de ler.
+        ## Estrutura do projeto:
+        - `/src/features/` - Componentes organizados por funcionalidade (tasks, lists, tags)
+        - `/src/context/` - Context providers para gerenciamento de estado
+        - `/src/common/` - Utilitários e componentes compartilhados
+
+        ## Sua análise deve:
+
+        1. **Verificar os relatórios de coverage existentes**
+        - Analisar coverage/lcov.info
+        - Revisar coverage/coverage-final.json
+        - Examinar coverage-reports/coverage-summary.md
+
+        2. **Identificar componentes e funções não testadas**
+        - Focar em arquivos com baixa cobertura no diretório src/
+        - Priorizar componentes críticos (Context providers, componentes principais)
+        - Identificar funções/métodos específicos sem cobertura
+
+        3. **Sugerir casos de teste específicos**
+        - Testes de renderização de componentes
+        - Testes de interação do usuário (cliques, formulários)
+        - Testes de gerenciamento de estado (Context)
+        - Testes de edge cases e validação
+
+        4. **Criar um relatório estruturado**
+        - Lista de arquivos com baixa cobertura
+        - Casos de teste específicos sugeridos para cada arquivo
+        - Exemplos de código de teste quando apropriado
+        - Priorização baseada na criticidade dos componentes
+
+        ## Formato do Relatório:
+
+        ```markdown
+        # Relatório de Análise de Cobertura de Testes - Task Dashboard
+
+        ## Resumo Executivo
+        - Cobertura atual: X%
+        - Arquivos analisados: X
+        - Recomendações principais: X
+
+        ## Arquivos com Baixa Cobertura
+
+        ### [Nome do Arquivo] - X% cobertura
+        **Linhas não cobertas:** [números das linhas]
+        **Funções não testadas:** [lista de funções]
+
+        **Testes sugeridos:**
+        1. [Descrição do teste 1]
+        2. [Descrição do teste 2]
+
+        **Exemplo de implementação:**
+        ```javascript
+        // Código de exemplo do teste
+        ```
+
+        ## Prioridades de Implementação
+        1. Alta - [Arquivos críticos]
+        2. Média - [Arquivos importantes]  
+        3. Baixa - [Arquivos opcionais]
+        ```
+
+        Crie uma nova Issue no repositório caiocqueiroz/task_dashboard_agent com o título "Análise de melhoria de cobertura de código por testcoveragent - [Data Atual]" e inclua o relatório compilado no corpo da issue. Certifique-se de que o relatório esteja bem formatado e fácil de ler.
+
     ```
 
 5. Crie um novo workflow dentro da pasta .github/workflows chamado build.yml com o seguinte conteúdo:
@@ -80,22 +143,7 @@ npm start
 
     Este workflow vai instalar e executar o GitHub Copilot CLI e executar um prompt simples para validar se está funcionando corretamente.
 
-7. Adicione também no arquivo copilot-instructions.md o seguinte conteúdo:
-
-    ```
-    ## Instruções gerais para o GitHub Copilot
-
-    # Informações do repositório
-    - Organização/Usuário: `caiocqueiroz`
-    - Nome do repositório: `task_dashboard_agent`
-
-    ## instruções gerais
-
-        ** 1. Garanta que o arquivo .gitignore esteja configurado para ignorar arquivos desnecessários, como arquivos temporários, binários e dependências, sempre pergunte se deve atualizar o .gitignore ao adicionar novos tipos de arquivos ao projeto.
-
-        ** 2. Mantenha o README.md atualizado com informações relevantes sobre o projeto, incluindo instruções, sempre pergunte se deve atualizar o README.md ao fazer mudanças significativas.
-    ```
-8. Agora execute os comandos abaixo para adicionar, commitar e dar push nas mudanças para o repositório remoto.
+6. Agora execute os comandos abaixo para adicionar, commitar e dar push nas mudanças para o repositório remoto.
 
     ```bash
     git add .
@@ -156,7 +204,7 @@ npm start
     ---
     # BDD Feature File Generator
 
-    You are an expert in Behavior-Driven Development (BDD) and creating Gherkin feature files. Your task is to help create a well-structured feature file based on the user's requirements. Leverage the [architecture doc](../../docs/architecture.md).
+    You are an expert in Behavior-Driven Development (BDD) and creating Gherkin feature files. Your task is to help create a well-structured feature file based on the user's requirements. 
 
     ## Clarification Phase
 
