@@ -122,15 +122,23 @@ npm start
 
     ```yaml
     - name: Generate Weekly Copilot Report and Create Issue
-        env: 
-            GITHUB_TOKEN: ${{ secrets.COPILOT_TOKEN }}
-            GH_TOKEN: ${{ secrets.COPILOT_TOKEN }}
-        run: |
-          echo "Testing Copilot CLI..."
+      env: 
+        GITHUB_TOKEN: ${{ secrets.COPILOT_TOKEN }}
+        GH_TOKEN: ${{ secrets.COPILOT_TOKEN }}
+      run: |
+        echo "Testing Copilot CLI..."
+        
+        # Make coverage data available in workspace
+        echo "Coverage artifacts available for analysis:"
+        ls -la coverage-reports/
+        
+        # Copy coverage data to current directory for agent access
+        if [ -d "coverage-reports" ]; then
+          cp -r coverage-reports/* . 2>/dev/null || true
+        fi
 
-          # Use Copilot CLI 
-          copilot -p "Execute the testcoveragent.prompt.md prompt file" --allow-all-tools --log-dir /tmp/logs --log-level debug
-
+        # Use Copilot CLI to execute the testcoveragent prompt
+        copilot -p "Execute the .github/prompts/testcoveragent.prompt.md prompt file" --allow-all-tools --log-dir /tmp/logs --log-level debug
 
     ```
 13. Execute o workflow manualmente novamente (GitHub -> Actions -> Build and Test with Copilot CLI -> Run workflow) para validar se o GitHub Copilot CLI está funcionando corretamente e criando a issue com o relatório de cobertura sugerido pelo agente.
