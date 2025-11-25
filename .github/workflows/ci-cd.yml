@@ -5,7 +5,6 @@ on:
     branches: [ main ]
   pull_request:
     branches: [ main ]
-  workflow_dispatch:
 
 # Explicitly define permissions
 permissions:
@@ -30,17 +29,40 @@ jobs:
     - name: Install dependencies
       run: npm ci
     
+    - name: Run tests with coverage
+      run: npm run test:coverage
+      
+    - name: Generate coverage report artifacts
+      run: |
+        mkdir -p coverage-reports
+        cp coverage/lcov.info coverage-reports/ || echo "LCOV report not found"
+        cp coverage/coverage-final.json coverage-reports/ || echo "JSON coverage not found"
+        
+        # Generate human-readable summary
+        if [ -f coverage/lcov-report/index.html ]; then
+          cp -r coverage/lcov-report coverage-reports/
+        fi
+        
+        # Generate text summary for Copilot CLI analysis
+        echo "# Test Coverage Summary" > coverage-reports/coverage-summary.md
+        echo "Generated on: $(date)" >> coverage-reports/coverage-summary.md
+        echo "" >> coverage-reports/coverage-summary.md
+        
+        if [ -f coverage/coverage-summary.txt ]; then
+          cat coverage/coverage-summary.txt >> coverage-reports/coverage-summary.md
+        else
+          echo "Coverage summary not available" >> coverage-reports/coverage-summary.md
+        fi
+    
+    - name: Upload coverage artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: coverage-reports
+        path: coverage-reports/
+        retention-days: 30
+    
     - name: Build application (without data hydration)
       run: npm run build
       env:
         VITE_ENABLE_DATA_HYDRATION: 'false'
     
-    - name: Run tests
-      run: npm test
-
-    # TODO: Add linting steps
-    # - name: Run ESLint
-    #   run: npm run lint
-    #
-    # - name: Run accessibility checks
-    #   run: npm run lint:a11y
