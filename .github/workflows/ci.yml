@@ -30,12 +30,13 @@ jobs:
     - name: Install dependencies
       run: npm ci
     
-    - name: Install GitHub Copilot CLI
-      run: npm install -g @githubnext/github-copilot-cli
-    
     - name: Run tests with coverage
       run: npm run test:coverage
-      
+
+    - name: Install GitHub Copilot CLI 
+      run: |
+        npm install -g @github/copilot
+
     - name: Generate coverage report artifacts
       run: |
         mkdir -p coverage-reports

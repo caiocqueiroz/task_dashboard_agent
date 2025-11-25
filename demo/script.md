@@ -104,7 +104,7 @@ npm start
 
     ```
 
-5. Crie um novo workflow dentro da pasta .github/workflows chamado build.yml com o seguinte conteúdo:
+5. Copie o arquivo ci.yml da pasta ./demo/ para a pasta .github/workflows/
 
     ```yaml
 
