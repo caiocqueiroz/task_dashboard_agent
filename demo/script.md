@@ -5,14 +5,19 @@
 
 1. Clone esse repositorio localmente no seu computador e abra o Visual Studio Code a partir do repositorio clonado. Garanta que voce tenha o Python 3.13 + PIP instalado no seu computador.
 
-2. 
+2. Inicie a aplicação com o 
+```
+npm install
+npm start
+```
+
 4. Crie a pasta chamada .github e outra chamada .vscode, ambas na raiz do repositório, crie também a pasta chamada workflows, outra chamada prompts e crie também o arquivo chamado copilot-instructions.md.
 
 4. Crie um novo arquivo de prompt chamado `testcoveragent.prompt.md` com o seguinte conteúdo:
 
     ```
     ---
-    mode: 'agent'
+    agent: 'agent'
     description: 'Analisa a cobertura de código e sugere testes unitários para melhorar a cobertura geral.'
     tools: ['search', 'runCommands', 'runTests']
     ---
@@ -35,9 +40,11 @@
 
     Crie uma nova Issue no repositório octocaio/testcoveragent com o título "Análise de melhoria de cobertura de código por testcoveragent - [Data Atual]" e inclua o relatório compilado no corpo da issue. Certifique-se de que o relatório esteja bem formatado e fácil de ler.
     ```
+
 5. Crie um novo workflow dentro da pasta .github/workflows chamado build.yml com o seguinte conteúdo:
 
     ```yaml
+
     name: Build and Test with Copilot CLI
 
     on:
@@ -72,15 +79,15 @@
     ```
 
     Este workflow vai instalar e executar o GitHub Copilot CLI e executar um prompt simples para validar se está funcionando corretamente.
-6. Agora peça ao GitHub Copilot para adicionar um arquivo .gitignore no seu repositorio.
+
 7. Adicione também no arquivo copilot-instructions.md o seguinte conteúdo:
 
     ```
     ## Instruções gerais para o GitHub Copilot
 
     # Informações do repositório
-    - Organização/Usuário: `octodemo`
-    - Nome do repositório: `testcoveragent`
+    - Organização/Usuário: `caiocqueiroz`
+    - Nome do repositório: `task_dashboard_agent`
 
     ## instruções gerais
 

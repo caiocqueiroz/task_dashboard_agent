@@ -27,6 +27,9 @@
     "preview": "vite preview",
     "preview:hydrated": "VITE_ENABLE_DATA_HYDRATION=true vite preview",
     "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "test:watch": "vitest",
+    "test:watch:coverage": "vitest --coverage",
     "build:css": "tailwindcss build src/index.css -o src/output.css",
     "watch:css": "tailwindcss -i src/index.css -o src/output.css --watch"
   },
