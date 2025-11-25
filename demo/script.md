@@ -116,18 +116,7 @@ npm start
 
 10. Você deve ver a saída do passo "Run Copilot CLI" com a resposta para o prompt "Porque o ceu é azul?".
 
-11. Agora peça ao Copilot para adicionar os passos de Build do Django no workflow build.yml, incluindo a instalação das dependências, migrações e execução dos testes, utilize o prompt abaixo
-
-    ````
-    Adicione ao workflow #file:build.yml os passos para fazer o setup do Python, instalar as dependências do Python incluindo coverage, pytest-cov e pytest-django, que execute o django migrate, rode os testes Django com coverage usando o comando nativo do Django (manage.py test), faça verificações de code quality com isort e black, e upload dos coverage reports usando upload-artifact@v4.
-
-    Garanta que:
-    1. A variável DJANGO_SETTINGS_MODULE seja configurada nos passos de migrate e test coverage
-    2. Use 'coverage run --source="apps" manage.py test' ao invés de pytest para evitar erros de AppRegistryNotReady
-    3. Gere os relatórios de coverage com 'coverage xml', 'coverage html' e 'coverage report'
-    4. Crie um arquivo setup.cfg com configuração do pytest-django para uso futuro
-    5. Instale as dependências: pytest-cov, pytest-django, coverage
-    ````
+11. Agora adicione ao workflow os passos de build e do test coverage que utilizaremos como artefato para o GitHub Copilot analisar, experiemente criar um prompt para alterar o workflow e iterar até conseguir o resultado esperado, caso prefira, utilize o workflow ja pronto em ./demo/ci.yaml
 
 12. Agora temos um artefato com o coverage reports, vamos utilizar o Copilot CLI para analisar o coverage report e sugerir melhorias na cobertura de código. Para isso, vamos alterar o nosso workflow para enviar um novo prompt ao Copilot CLI.
 
