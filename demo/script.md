@@ -3,7 +3,7 @@
 
 ## Criando uma aplicação e melhorando a cobertura de testes com um Agente usando o GitHub Copilot CLI e o GitHub Copilot Coding Agent.
 
-1. Clone esse repositorio localmente no seu computador e abra o Visual Studio Code a partir do repositorio clonado. Garanta que voce tenha o Python 3.13 + PIP instalado no seu computador.
+1. Clone esse repositorio localmente no seu computador e abra o Visual Studio Code a partir do repositorio clonado.
 
 2. Inicie a aplicação com o 
 ```
