@@ -143,14 +143,113 @@ npm start
 
     Este workflow vai instalar e executar o GitHub Copilot CLI e executar um prompt simples para validar se está funcionando corretamente.
 
-6. Agora execute os comandos abaixo para adicionar, commitar e dar push nas mudanças para o repositório remoto.
+6. Agora peça ao GitHub Copilot no modo Agent e com o modelo que preferir, para criar um arquivo Copilot Instructions. Segue abaixo um prompt sugerido.
+
+```
+Crie um arquivo copilot instructions baseado nesse workspace, leve em consideração, melhores praticas da linguagem utilizada nesse workspace, também adicione nesse arquivo, instruções para a revisão de código (PR).
+```
+
+Segue um arquivo gerado pelo Copilot como exemplo
+
+```
+# Task Dashboard App - Copilot Instructions
+
+## Project Overview
+This is a React-based Todo application that allows users to create, manage, and organize tasks with features like tags, task lists, and task filtering. The application is built using React, Framer Motion for animations, and Tailwind CSS for styling. It uses Vite as the build tool and Vitest for testing.
+
+## Code Standards
+
+### Required Before Commit
+- All tests must pass: `npm test`
+- Code must follow JSX and React best practices
+- Ensure proper component structure and separation of concerns
+- Verify that new components follow established patterns and include tests
+- Check for accessibility issues in UI components
+
+### React Patterns
+- Follow functional component patterns with React Hooks
+- Use context providers for state management (TaskContext, TagContext, ListContext)
+- Follow component composition principles
+- Use proper data-testid attributes for testability
+- Apply proper prop types validation when needed
+- Keep components focused on a single responsibility
+- Use descriptive variable and function names
+
+### CSS/Styling Standards
+- Use Tailwind CSS utility classes for styling
+- Follow the established color scheme defined in tailwind.config.js
+- Use consistent spacing and sizing patterns
+- Ensure responsive design works across different screen sizes
+
+## Development Flow
+
+- Install dependencies: `npm install`
+- Start development server: `npm start`
+- Run tests: `npm test`
+- Build for production: `npm run build`
+
+## Repository Structure
+- `/src`: Main application source code
+  - `/context`: React context providers for state management
+  - `/features`: Feature-based organization of components
+    - `/lists`: List-related components
+    - `/tags`: Tag management components
+    - `/tasks`: Task-related components
+  - `/common`: Common/shared components and utilities
+- `/public`: Static assets and HTML template
+- Configuration files:
+  - `vite.config.js`: Vite configuration
+  - `tailwind.config.js`: Tailwind CSS configuration
+  - `vitest.config.js`: Vitest test runner configuration
+
+## Key Guidelines
+
+1. **Component Architecture**:
+   - Components should be organized by feature in the features directory
+   - Each component should have a single responsibility
+   - Use composition over inheritance
+   - Keep components reasonably sized and focused
+
+2. **State Management**:
+   - Use the established context providers:
+     - `TaskContext` for task-related state and operations
+     - `TagContext` for tag management
+     - `ListContext` for task list management
+   - Follow the pattern of providing actions through context
+
+3. **UI/UX Standards**:
+   - Use Framer Motion for animations to maintain consistency
+   - Follow the established design patterns for components
+   - Ensure proper accessibility attributes are included
+   - Use the defined color palette from the Tailwind configuration
+
+4. **Testing**:
+   - Write tests for all components using Vitest and React Testing Library
+   - Mock dependencies appropriately in tests
+   - Test both component rendering and user interactions
+   - Use data-testid attributes for targeting elements in tests
+
+5. **Documentation**:
+   - Include JSDoc comments for complex functions
+   - Document props for components when they're not self-explanatory
+   - Add meaningful comments for complex logic
+   - Document context providers' purpose and available values/actions
+
+6. **Performance Considerations**:
+   - Use React.memo for components that render frequently
+   - Be mindful of unnecessary re-renders
+   - Keep animations performant by using hardware-accelerated properties
+
+```
+
+7. Agora execute os comandos abaixo para adicionar, commitar e dar push nas mudanças para o repositório remoto.
 
     ```bash
     git add .
     git commit -m "Commit inicial com o app Django e a configuração do Copilot CLI"
     git push origin demo-<seu-nome-de-usuario>
     ```
-7. Agora vá até o repositorio remoto no GitHub e crie um Personal Access Token (Fine-grained - GitHub -> Settings -> Developer Settings -> Personal Access Tokens -> Fine-grained tokens) com as permissões necessárias para o GitHub Copilot CLI funcionar corretamente para analisar nosso código e criar issues. As permissões necessarias para que o Copilot possa operar da forma que o nosso agente precisa são:
+8. Agora vá até o repositorio remoto no GitHub e crie um Personal Access Token (Fine-grained - GitHub -> Settings -> Developer Settings -> Personal Access Tokens -> Fine-grained tokens) com as permissões necessárias para o GitHub Copilot CLI funcionar corretamente para analisar nosso código e criar issues. As permissões necessarias para que o Copilot possa operar da forma que o nosso agente precisa são:
 
     - **Actions**: Read
     - **Contents**: Read
@@ -158,15 +257,15 @@ npm start
     - **Metadata**: Read
     - **Pull requests**: Write (se for criar PRs)
 
-8. Adicione o token criado como um segredo do repositório (GitHub -> Settings -> Secrets and variables -> Actions -> New repository secret) com o nome `COPILOT_TOKEN`.
+9. Adicione o token criado como um segredo do repositório (GitHub -> Settings -> Secrets and variables -> Actions -> New repository secret) com o nome `COPILOT_TOKEN`.
 
-9. Execute o workflow manualmente (GitHub -> Actions -> Build and Test with Copilot CLI -> Run workflow) para validar se o GitHub Copilot CLI está funcionando corretamente.
+10. Execute o workflow manualmente (GitHub -> Actions -> Build and Test with Copilot CLI -> Run workflow) para validar se o GitHub Copilot CLI está funcionando corretamente.
 
-10. Você deve ver a saída do passo "Run Copilot CLI" com a resposta para o prompt "Porque o ceu é azul?".
+11. Você deve ver a saída do passo "Run Copilot CLI" com a resposta para o prompt "Porque o ceu é azul?".
 
-11. Agora adicione ao workflow os passos de build e do test coverage que utilizaremos como artefato para o GitHub Copilot analisar, experiemente criar um prompt para alterar o workflow e iterar até conseguir o resultado esperado, caso prefira, utilize o workflow ja pronto em ./demo/ci.yaml
+12. Agora adicione ao workflow os passos de build e do test coverage que utilizaremos como artefato para o GitHub Copilot analisar, experiemente criar um prompt para alterar o workflow e iterar até conseguir o resultado esperado, caso prefira, utilize o workflow ja pronto em ./demo/ci.yaml
 
-12. Agora temos um artefato com o coverage reports, vamos utilizar o Copilot CLI para analisar o coverage report e sugerir melhorias na cobertura de código. Para isso, vamos alterar o nosso workflow para enviar um novo prompt ao Copilot CLI.
+13. Agora temos um artefato com o coverage reports, vamos utilizar o Copilot CLI para analisar o coverage report e sugerir melhorias na cobertura de código. Para isso, vamos alterar o nosso workflow para enviar um novo prompt ao Copilot CLI.
 
     ```yaml
     - name: Generate Weekly Copilot Report and Create Issue
@@ -189,9 +288,9 @@ npm start
         copilot -p "Execute the .github/prompts/testcoveragent.prompt.md prompt file" --allow-all-tools --log-dir /tmp/logs --log-level debug
 
     ```
-13. Execute o workflow manualmente novamente (GitHub -> Actions -> Build and Test with Copilot CLI -> Run workflow) para validar se o GitHub Copilot CLI está funcionando corretamente e criando a issue com o relatório de cobertura sugerido pelo agente.
+14. Execute o workflow manualmente novamente (GitHub -> Actions -> Build and Test with Copilot CLI -> Run workflow) para validar se o GitHub Copilot CLI está funcionando corretamente e criando a issue com o relatório de cobertura sugerido pelo agente.
 
-14. Agora vá até a issue criada e atribua a issue ao Copilot, dessa modo vamos disparar uma execução do GitHub Copilot Coding Agent, que vai gerar uma pull requetest com os testes sugeridos para melhorar a cobertura de código do app Django..
+15. Agora vá até a issue criada e atribua a issue ao Copilot, dessa modo vamos disparar uma execução do GitHub Copilot Coding Agent, que vai gerar uma pull requetest com os testes sugeridos para melhorar a cobertura de código do app Django..
 
 ## Utilizando um agent de Behavior Driven Development (BDD) e Playwright para descobrir e executar testes E2E automatizados.
 
